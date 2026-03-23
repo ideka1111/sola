@@ -3,6 +3,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import React from "react";
+import { Analytics } from "@vercel/analytics/next";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 const inter = Inter({
@@ -84,6 +85,7 @@ export default function RootLayout({
             </footer>
           </div>
         </NuqsAdapter>
+        <Analytics />
       </body>
     </html>
   );
