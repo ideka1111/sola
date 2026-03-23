@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { readUpstreamError } from "../../_lib/upstream";
+
 const BACKEND_URL = process.env.BACKEND_URL ?? "http://127.0.0.1:8000";
 
 export async function POST(req: NextRequest) {
@@ -34,8 +36,8 @@ export async function POST(req: NextRequest) {
     });
 
     if (!upstream.ok || !upstream.body) {
-      const text = await upstream.text();
-      return new NextResponse(text || "Upstream error", {
+      const text = await readUpstreamError(upstream, "/chat/stream");
+      return new NextResponse(text, {
         status: upstream.status,
         headers: {
           "Content-Type": "text/plain; charset=utf-8",
@@ -55,4 +57,3 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
-

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { readUpstreamError } from "../_lib/upstream";
+
 const BACKEND_URL = process.env.BACKEND_URL ?? "http://127.0.0.1:8000";
 
 export async function POST(req: NextRequest) {
@@ -39,7 +41,9 @@ export async function POST(req: NextRequest) {
       cache: "no-store",
     });
 
-    const text = await upstream.text();
+    const text = upstream.ok
+      ? await upstream.text()
+      : await readUpstreamError(upstream, "/feedback");
     return new NextResponse(text, {
       status: upstream.status,
       headers: {

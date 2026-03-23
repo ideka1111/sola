@@ -58,6 +58,21 @@ function normalizeAnswer(input: unknown): string {
     .replace(/ÃƒÆ’Ã…Â¸/g, "ß");
 }
 
+function normalizeErrorMessage(input: unknown): string {
+  if (typeof input !== "string" || !input.trim()) {
+    return "Unbekannter Fehler";
+  }
+
+  if (/^\s*<!DOCTYPE html/i.test(input)) {
+    return (
+      "Das Chat-Backend wurde nicht korrekt erreicht. " +
+      "Pruefe die BACKEND_URL-Konfiguration und ob das FastAPI-Backend laeuft."
+    );
+  }
+
+  return input;
+}
+
 function parseStreamPayload(raw: string): { text: string; toolUsed: boolean; status: string } {
   let toolUsed = false;
   let text = raw;
@@ -230,7 +245,9 @@ export default function ApothekensucherPage() {
       }
     } catch (error) {
       setLoadingStatus("");
-      const err = error instanceof Error ? error.message : "Unbekannter Fehler";
+      const err = normalizeErrorMessage(
+        error instanceof Error ? error.message : "Unbekannter Fehler",
+      );
       setMessages((prev) => {
         const copy = [...prev];
         const lastAssistantIndex = copy
