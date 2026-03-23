@@ -1,0 +1,22 @@
+# --- Web server ---
+fastapi
+uvicorn[standard]
+pydantic
+python-dotenv
+
+# --- LangChain core ---
+langgraph
+langchain
+langchain-community
+langchain-openai
+langgraph-supervisor
+
+# --- Database ---
+sqlalchemy
+psycopg[binary]   # Postgres / Supabase
+# pymysql         # uncomment if you use MySQL instead
+
+# --- External tools ---
+requests
+pymupdf 
+pillow

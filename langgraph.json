@@ -1,0 +1,9 @@
+{
+  "graphs": {
+    "sola": "./graphs.py:graph"
+  },
+  "env": ".env",
+  "dependencies": [
+    "."
+  ]
+}
